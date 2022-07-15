@@ -19,7 +19,7 @@ def extract_body(event):
     
     base64_needed = event.get('isBase64Encoded', False)
     if base64_needed:
-        raw = base64.b64decode(encoded_data).decode('utf-8')
+        raw = base64.b64decode(raw).decode('utf-8')
 
     decoded = json.loads(raw)
     return decoded
@@ -44,7 +44,7 @@ def post_message_thread(event, message):
     
     url = 'https://slack.com/api/chat.postMessage'
 
-    message = {
+    message_request = {
         "channel": channel,
         "thread_ts": thread_ts,
         "blocks": [{
@@ -53,9 +53,10 @@ def post_message_thread(event, message):
         }]
     }
 
-    response = requests.post(url, json=message, headers=headers).json()
-    
-    
+    print(f'posting {message} to {channel}...')
+    response = requests.post(url, json=message_request, headers=headers).json()
+    print(json.dumps(response))
+
 
 def default_action(body, event):
     print('default_action')
@@ -73,7 +74,22 @@ def thread(body, event):
         "Please reply in threads to keep the discussion more organized:\n" + 
         "https://datatalks.club/slack/guidelines.html#taking-part-in-discussions"
     )
-    post_message_thread(event, message)    
+    post_message_thread(event, message)
+
+
+def faq(body, event):
+    channel = event['item']['channel']
+
+    if channel == "C01FABYF2RG":
+        faq_link = "https://docs.google.com/document/d/19bnYs80DwuUimHM65UV3sylsCn2j1vziPOwzBwQrebw/edit"
+    elif channel == "C02R98X7DS9":
+        faq_link = "https://docs.google.com/document/d/12TlBfhIiKtyBv8RnsoJR6F72bkPDGEvPOItJIxaEzE0/edit"
+    else:
+        print('unknown channel, exiting')
+        return
+
+    message = f"Please check the <{faq_link}|FAQ>"
+    post_message_thread(event, message)  
 
 
 admins = {'U01AXE0P5M3'}
@@ -81,6 +97,7 @@ admins = {'U01AXE0P5M3'}
 reaction_actions = {
     'dont-ask-to-ask-just-ask': dont_ask_to_ask,
     'thread': thread,
+    'faq': faq,
 }
 
 def lambda_handler(event, context):
