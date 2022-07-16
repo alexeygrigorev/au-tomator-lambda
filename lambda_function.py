@@ -71,7 +71,7 @@ def dont_ask_to_ask(body, event):
 
 def thread(body, event):
     message = (
-        "Please reply in threads to keep the discussion more organized:\n" + 
+        "Please use threads to keep the discussion more organized:\n" + 
         "https://datatalks.club/slack/guidelines.html#taking-part-in-discussions"
     )
     post_message_thread(event, message)
