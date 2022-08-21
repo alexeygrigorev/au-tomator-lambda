@@ -11,6 +11,11 @@ headers = {
 }
 
 
+COURSE_MLOPS_ZOOMCAMP_CHANNEL = "C02R98X7DS9"
+COURSE_DATA_ENGINEERING_CHANNEL = "C01FABYF2RG"
+COURSE_ML_ZOOMCAMP_CHANNEL = "C0288NJ5XSA"
+
+
 def extract_body(event):
     if 'body' not in event:
         return {}
@@ -77,12 +82,33 @@ def thread(body, event):
     post_message_thread(event, message)
 
 
+def error_log_to_thread_please(body, event):
+    channel = event['item']['channel']
+
+    if channel == COURSE_DATA_ENGINEERING_CHANNEL:
+        guidelines_link = "https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/asking-questions.md"
+    elif channel == COURSE_MLOPS_ZOOMCAMP_CHANNEL:
+        guidelines_link = "https://github.com/DataTalksClub/mlops-zoomcamp/blob/main/asking-questions.md"
+    elif channel == COURSE_ML_ZOOMCAMP_CHANNEL:
+        guidelines_link = "https://github.com/alexeygrigorev/mlbookcamp-code/blob/master/course-zoomcamp/asking-questions.md"
+    else:
+        guidelines_link = "https://datatalks.club/slack/guidelines.html#code-problems-and-errors"
+
+    message = (
+        "Please move the error log from the main message to the thread.\n" +
+        "Use code block for formatting the log: https://slack.com/help/articles/202288908-Format-your-messages\n\n" +
+        f"Follow <{guidelines_link}|these recommendations> to make it easier to help you."
+    )
+
+    post_message_thread(event, message)
+
+
 def faq(body, event):
     channel = event['item']['channel']
 
-    if channel == "C01FABYF2RG":
+    if channel == COURSE_DATA_ENGINEERING_CHANNEL:
         faq_link = "https://docs.google.com/document/d/19bnYs80DwuUimHM65UV3sylsCn2j1vziPOwzBwQrebw/edit"
-    elif channel == "C02R98X7DS9":
+    elif channel == COURSE_MLOPS_ZOOMCAMP_CHANNEL:
         faq_link = "https://docs.google.com/document/d/12TlBfhIiKtyBv8RnsoJR6F72bkPDGEvPOItJIxaEzE0/edit"
     else:
         print('unknown channel, exiting')
@@ -92,13 +118,36 @@ def faq(body, event):
     post_message_thread(event, message)  
 
 
+def no_screenshots(body, event):
+    channel = event['item']['channel']
+
+    if channel == COURSE_DATA_ENGINEERING_CHANNEL:
+        guidelines_link = "https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/asking-questions.md"
+    elif channel == COURSE_MLOPS_ZOOMCAMP_CHANNEL:
+        guidelines_link = "https://github.com/DataTalksClub/mlops-zoomcamp/blob/main/asking-questions.md"
+    elif channel == COURSE_ML_ZOOMCAMP_CHANNEL:
+        guidelines_link = "https://github.com/alexeygrigorev/mlbookcamp-code/blob/master/course-zoomcamp/asking-questions.md"
+    else:
+        guidelines_link = "https://datatalks.club/slack/guidelines.html#code-problems-and-errors"
+
+    message = "Please don't post screenshost or pictures of your code, " + \
+        "they are very difficult to read. Instead, copy the code and put it " + \
+        "in a code block.\n\n" + \
+        f"Follow <{guidelines_link}|these recommendations> to make it easier to help you."
+
+    post_message_thread(event, message)
+
+
 admins = {'U01AXE0P5M3'}
 
 reaction_actions = {
     'dont-ask-to-ask-just-ask': dont_ask_to_ask,
     'thread': thread,
     'faq': faq,
+    'error-log-to-thread-please': error_log_to_thread_please,
+    'no-screenshots': no_screenshots,
 }
+
 
 def lambda_handler(event, context):
     print(json.dumps(event))
