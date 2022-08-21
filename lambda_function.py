@@ -118,7 +118,7 @@ def faq(body, event):
     post_message_thread(event, message)  
 
 
-def no_screenshots(body, event):
+def no_screenshot(body, event):
     channel = event['item']['channel']
 
     if channel == COURSE_DATA_ENGINEERING_CHANNEL:
@@ -145,7 +145,7 @@ reaction_actions = {
     'thread': thread,
     'faq': faq,
     'error-log-to-thread-please': error_log_to_thread_please,
-    'no-screenshots': no_screenshots,
+    'no-screenshot': no_screenshot,
 }
 
 
