@@ -1,0 +1,55 @@
+admins:
+    - U01AXE0P5M3
+channels:
+    C02R98X7DS9: "course-mlops-zoomcamp"
+    C01FABYF2RG: "course-data-engineering"
+    C0288NJ5XSA: "course-ml-zoomcamp"
+reactions:
+    dont-ask-to-ask-just-ask:
+        type: SLACK_POST
+        message: >
+            Don't ask to ask:\n
+            https://dontasktoask.com/
+    thread:
+        type: SLACK_POST
+        message: >
+            Please use threads to keep the discussion more organized:\n
+            https://datatalks.club/slack/guidelines.html#taking-part-in-discussions
+    faq:
+        type: SLACK_POST_CHANNEL_AWARE
+        CHANNEL_PLACEHOLDER:
+            course-ml-zoomcamp: https://docs.google.com/document/d/1LpPanc33QJJ6BSsyxVg-pWNMplal84TdZtq10naIhD8/edit
+            course-data-engineering: https://docs.google.com/document/d/19bnYs80DwuUimHM65UV3sylsCn2j1vziPOwzBwQrebw/edit
+            course-mlops-zoomcamp: https://docs.google.com/document/d/12TlBfhIiKtyBv8RnsoJR6F72bkPDGEvPOItJIxaEzE0/edit
+            default: null
+        default-action: NOOP
+        message: >
+            Please check the <{CHANNEL_PLACEHOLDER}|FAQ>
+    no-screenshot:
+        type: SLACK_POST_CHANNEL_AWARE
+        CHANNEL_PLACEHOLDER:
+            course-ml-zoomcamp: https://github.com/alexeygrigorev/mlbookcamp-code/blob/master/course-zoomcamp/asking-questions.md
+            course-data-engineering: https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/asking-questions.md
+            course-mlops-zoomcamp: https://github.com/DataTalksClub/mlops-zoomcamp/blob/main/asking-questions.md
+            default: https://datatalks.club/slack/guidelines.html#code-problems-and-errors
+        default-action: SLACK_POST
+        message: >
+            Please don't post screenshost or pictures of your code
+            they are very difficult to read.\n\n
+            Instead, copy the code and put it in a code block.\n\n
+            Follow <{CHANNEL_PLACEHOLDER}|these recommendations> to make
+            it easier to help you.
+    error-log-to-thread-please:
+        type: SLACK_POST_CHANNEL_AWARE
+        CHANNEL_PLACEHOLDER:
+            course-ml-zoomcamp: https://github.com/alexeygrigorev/mlbookcamp-code/blob/master/course-zoomcamp/asking-questions.md
+            course-data-engineering: https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/asking-questions.md
+            course-mlops-zoomcamp: https://github.com/DataTalksClub/mlops-zoomcamp/blob/main/asking-questions.md
+            default: https://datatalks.club/slack/guidelines.html#code-problems-and-errors
+        default-action: SLACK_POST
+        message: >
+            Please move the error log from the main message to the thread.\n
+            Use code block for formatting the log:
+            https://slack.com/help/articles/202288908-Format-your-messages\n\n
+            Follow <{CHANNEL_PLACEHOLDER}|these recommendations> to make
+            it easier to help you.

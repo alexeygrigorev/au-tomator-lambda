@@ -3,15 +3,12 @@
 Preparing the package:
 
 ```
-bash package.sh
+make package
 ```
 
 Upload it:
 
 ```
-aws lambda \
-    update-function-code \
-    --function-name slack-test \
-    --zip-file fileb://`cygpath -w ${PWD}`/package.zip
+make publish
 ```
 
