@@ -255,6 +255,31 @@ Apologies for the inconvenience. Thank you!
     send_dm_and_delete(item, message_template)
 
 
+
+def jobs_rules(body, event):
+    message_template = """
+Hi <@{user}>! 
+
+You created this message in <#{channel}>:
+
+> {message_text}
+
+We want to make this community useful for everyone, that's why we ask you to follow
+the templates and the rules suggested here:
+
+https://alexeygrigorev.notion.site/Jobs-b6ab78b9af504c8dac86413e7404fcfb
+
+Your post was removed from the channel. You're free to make adjustments and post again.
+
+Apologies for the inconvenience. Thank you!
+""".strip()
+
+    item = event['item']
+    send_dm_and_delete(item, message_template)
+
+
+
+
 admins = {'U01AXE0P5M3'}
 
 reaction_actions = {
@@ -264,6 +289,7 @@ reaction_actions = {
     'error-log-to-thread-please': error_log_to_thread_please,
     'no-screenshot': no_screenshot,
     'shameless-rules': shameless_rules,
+    'jobs-rules': jobs_rules,
 }
 
 
