@@ -5,10 +5,7 @@ import requests
 
 
 SLACK_TOKEN = os.getenv('SLACK_TOKEN')
-
-headers = {
-    'Authorization': f'Bearer {SLACK_TOKEN}'
-}
+USER_SLACK_TOKEN = os.getenv('USER_SLACK_TOKEN')
 
 
 COURSE_MLOPS_ZOOMCAMP_CHANNEL = "C02R98X7DS9"
@@ -58,9 +55,86 @@ def post_message_thread(event, message):
         }]
     }
 
+    headers = {
+        'Authorization': f'Bearer {SLACK_TOKEN}'
+    }
+
     print(f'posting {message} to {channel}...')
-    response = requests.post(url, json=message_request, headers=headers).json()
-    print(json.dumps(response))
+    response = requests.post(url, json=message_request, headers=headers)
+    response.raise_for_status()
+
+    response_json = response.json()
+    print(json.dumps(response_json))
+
+    return response_json
+
+
+def find_message_by_ts(messages, ts):
+    for msg in messages:
+        if msg['ts'] == ts:
+            return msg
+    return None
+
+
+def get_message_content(channel, ts):
+    params = {
+        'channel': channel,
+        'lastest': ts,
+        'limit': 10,
+        'inclusive': True
+    }
+
+    headers = {
+        'Authorization': f'Bearer {SLACK_TOKEN}'
+    }
+
+    url = 'https://slack.com/api/conversations.history'
+    response = requests.get(url, params=params, headers=headers)
+    response.raise_for_status()
+    
+    response_json = response.json()
+
+    message = find_message_by_ts(response_json['messages'], ts)
+    return message
+
+
+def send_dm(user, message):    
+    url = 'https://slack.com/api/chat.postMessage'
+
+    message_request = {
+        "channel": user,
+        "blocks": [{
+            "type": "section",
+            "text": {"type": "mrkdwn", "text": message}
+        }]
+    }
+
+    headers = {
+        'Authorization': f'Bearer {SLACK_TOKEN}'
+    }
+    
+    print(f'posting {message} to {user}...')
+    response = requests.post(url, json=message_request, headers=headers)
+    response.raise_for_status()
+    return response.json()
+
+
+def remove_message(channel, ts):
+    url = 'https://slack.com/api/chat.delete'
+
+    message_request = {
+        "channel": channel,
+        "ts": ts
+    }
+    
+    headers = {
+        'Authorization': f'Bearer {USER_SLACK_TOKEN}'
+    }
+
+    print(f'removing message from {channel} at {ts}...')
+    response = requests.post(url, json=message_request, headers=headers)
+    response.raise_for_status()
+    return response.json()
 
 
 def default_action(body, event):
@@ -110,6 +184,9 @@ def faq(body, event):
         faq_link = "https://docs.google.com/document/d/19bnYs80DwuUimHM65UV3sylsCn2j1vziPOwzBwQrebw/edit"
     elif channel == COURSE_MLOPS_ZOOMCAMP_CHANNEL:
         faq_link = "https://docs.google.com/document/d/12TlBfhIiKtyBv8RnsoJR6F72bkPDGEvPOItJIxaEzE0/edit"
+    elif channel == COURSE_ML_ZOOMCAMP_CHANNEL:
+        faq_link = "https://docs.google.com/document/d/1LpPanc33QJJ6BSsyxVg-pWNMplal84TdZtq10naIhD8/edit"
+
     else:
         print('unknown channel, exiting')
         return
@@ -138,6 +215,46 @@ def no_screenshot(body, event):
     post_message_thread(event, message)
 
 
+def send_dm_and_delete(item, message_pattern):
+    channel = item['channel']
+    ts = item['ts']
+
+    message_details = get_message_content(channel, ts)
+    user = message_details['user']
+    message_text = message_details['text']
+
+    message_dm = message_pattern.format(
+        user=user,
+        channel=channel,
+        message_text=message_text
+    )
+
+    send_dm(user, message_dm)
+    remove_message(channel, ts)
+
+
+def shameless_rules(body, event):
+    message_template = """
+Hi <@{user}>! 
+
+You created this message in <#{channel}>:
+
+> {message_text}
+
+We want to make this community useful for everyone, that's why we ask you to follow
+the "shameless channels" template and the rules:
+
+https://alexeygrigorev.notion.site/Shameless-promotion-rules-f565ac6aa2064f7190382f2ffd82c876
+
+Your post was removed from the channel. Please adjust your post.
+
+Apologies for the inconvenience. Thank you!
+""".strip()
+
+    item = event['item']
+    send_dm_and_delete(item, message_template)
+
+
 admins = {'U01AXE0P5M3'}
 
 reaction_actions = {
@@ -146,6 +263,7 @@ reaction_actions = {
     'faq': faq,
     'error-log-to-thread-please': error_log_to_thread_please,
     'no-screenshot': no_screenshot,
+    'shameless-rules': shameless_rules,
 }
 
 
