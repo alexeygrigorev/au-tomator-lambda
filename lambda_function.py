@@ -11,6 +11,7 @@ USER_SLACK_TOKEN = os.getenv('USER_SLACK_TOKEN')
 COURSE_MLOPS_ZOOMCAMP_CHANNEL = "C02R98X7DS9"
 COURSE_DATA_ENGINEERING_CHANNEL = "C01FABYF2RG"
 COURSE_ML_ZOOMCAMP_CHANNEL = "C0288NJ5XSA"
+COURSE_LLM_ZOOMCAMP_CHANNEL = "C06TEGTGM3J"
 
 
 def extract_body(event):
@@ -165,6 +166,8 @@ def error_log_to_thread_please(body, event):
         guidelines_link = "https://github.com/DataTalksClub/mlops-zoomcamp/blob/main/asking-questions.md"
     elif channel == COURSE_ML_ZOOMCAMP_CHANNEL:
         guidelines_link = "https://github.com/alexeygrigorev/mlbookcamp-code/blob/master/course-zoomcamp/asking-questions.md"
+    elif channel == COURSE_LLM_ZOOMCAMP_CHANNEL:
+        guidelines_link = "https://github.com/DataTalksClub/llm-zoomcamp/blob/main/asking-questions.md"
     else:
         guidelines_link = "https://datatalks.club/slack/guidelines.html#code-problems-and-errors"
 
@@ -186,7 +189,8 @@ def faq(body, event):
         faq_link = "https://docs.google.com/document/d/12TlBfhIiKtyBv8RnsoJR6F72bkPDGEvPOItJIxaEzE0/edit"
     elif channel == COURSE_ML_ZOOMCAMP_CHANNEL:
         faq_link = "https://docs.google.com/document/d/1LpPanc33QJJ6BSsyxVg-pWNMplal84TdZtq10naIhD8/edit"
-
+    elif channel == COURSE_LLM_ZOOMCAMP_CHANNEL:
+        faq_link = "https://docs.google.com/document/d/1m2KexowAXTmexfC5rVTCSnaShvdUQ8Ag2IEiwBDHxN0/edit"
     else:
         print('unknown channel, exiting')
         return
@@ -204,6 +208,8 @@ def no_screenshot(body, event):
         guidelines_link = "https://github.com/DataTalksClub/mlops-zoomcamp/blob/main/asking-questions.md"
     elif channel == COURSE_ML_ZOOMCAMP_CHANNEL:
         guidelines_link = "https://github.com/alexeygrigorev/mlbookcamp-code/blob/master/course-zoomcamp/asking-questions.md"
+    elif channel == COURSE_LLM_ZOOMCAMP_CHANNEL:
+        guidelines_link = "https://github.com/DataTalksClub/llm-zoomcamp/blob/main/asking-questions.md"
     else:
         guidelines_link = "https://datatalks.club/slack/guidelines.html#code-problems-and-errors"
 
