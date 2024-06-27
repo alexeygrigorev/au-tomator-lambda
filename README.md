@@ -16,3 +16,11 @@ aws lambda \
         > /dev/null
 ```
 
+```bash
+python -m venv venv
+source venv/Scripts/activate
+# source venv/bin/activate
+pip install -r requirements.txt
+python test_ai.py
+```
+
