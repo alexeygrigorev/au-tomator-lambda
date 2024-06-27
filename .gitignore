@@ -1,3 +1,5 @@
 package
 package.zip
 .ipynb_checkpoints/
+__pycache__/
+.envrc

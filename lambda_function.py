@@ -4,8 +4,19 @@ import base64
 import requests
 
 
+
 SLACK_TOKEN = os.getenv('SLACK_TOKEN')
 USER_SLACK_TOKEN = os.getenv('USER_SLACK_TOKEN')
+GROQ_API_KEY = os.getenv('GROQ_API_KEY')
+
+
+try:
+    from groq import Groq
+    groq_client = Groq(api_key=GROQ_API_KEY)
+except ImportError:
+    print("GROQ is not available")
+    import traceback
+    traceback.print_exc()
 
 
 COURSE_MLOPS_ZOOMCAMP_CHANNEL = "C02R98X7DS9"
@@ -94,7 +105,7 @@ def get_message_content(channel, ts):
     response.raise_for_status()
     
     response_json = response.json()
-
+    # print(json.dumps(response_json))
     message = find_message_by_ts(response_json['messages'], ts)
     return message
 
@@ -285,6 +296,38 @@ Apologies for the inconvenience. Thank you!
 
 
 
+def get_message(event):
+    item = event['item']
+    channel = item['channel']
+    ts = item['ts']
+
+    message_details = get_message_content(channel, ts)
+
+    user = message_details['user']
+    message_text = message_details['text']
+
+    return user, message_text
+
+
+def ask_ai(body, event):
+    user, original_message = get_message(event)
+    
+    chat_completion = groq_client.chat.completions.create(
+        messages=[{"role": "user", "content": original_message}],
+        model="llama3-70b-8192",
+    )
+
+    ai_response = chat_completion.choices[0].message.content
+    print("response from GROQ:", ai_response)
+
+    message = f"""
+Hi <@{user}>! We asked AI, and this is what it answered:
+
+{ai_response}
+""".strip()
+
+    post_message_thread(event, message)
+
 
 admins = {'U01AXE0P5M3'}
 
@@ -296,6 +339,7 @@ reaction_actions = {
     'no-screenshot': no_screenshot,
     'shameless-rules': shameless_rules,
     'jobs-rules': jobs_rules,
+    'ask-ai': ask_ai
 }
 
 
