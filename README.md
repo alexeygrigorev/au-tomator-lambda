@@ -12,15 +12,25 @@ Upload it:
 aws lambda \
     update-function-code \
     --function-name slack-test \
+    --zip-file fileb://${PWD}/package.zip \
+        > /dev/null
+```
+
+On windows:
+
+```bash
+./package.bat
+
+aws lambda \
+    update-function-code \
+    --function-name slack-test \
     --zip-file fileb://`cygpath -w ${PWD}`/package.zip \
         > /dev/null
 ```
 
+
+Test:
+
 ```bash
-python -m venv venv
-source venv/Scripts/activate
-# source venv/bin/activate
-pip install -r requirements.txt
 python test_ai.py
 ```
-
