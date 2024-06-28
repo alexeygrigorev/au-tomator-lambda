@@ -10,7 +10,7 @@ mkdir package
 #     amazon/aws-lambda-python:3.12 \
 pip install -r requirements.txt -t package/
 
-cp lambda_function.py package
+cp *.py package
 
 (cd package && zip -r ../package.zip *) > /dev/null
 

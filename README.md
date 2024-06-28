@@ -19,8 +19,6 @@ aws lambda \
 On windows:
 
 ```bash
-./package.bat
-
 aws lambda \
     update-function-code \
     --function-name slack-test \
