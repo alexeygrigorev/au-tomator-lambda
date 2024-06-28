@@ -10,19 +10,41 @@ USER_SLACK_TOKEN = os.getenv('USER_SLACK_TOKEN')
 GROQ_API_KEY = os.getenv('GROQ_API_KEY')
 
 
-try:
-    from groq import Groq
-    groq_client = Groq(api_key=GROQ_API_KEY)
-except ImportError:
-    print("GROQ is not available")
-    import traceback
-    traceback.print_exc()
-
-
 COURSE_MLOPS_ZOOMCAMP_CHANNEL = "C02R98X7DS9"
 COURSE_DATA_ENGINEERING_CHANNEL = "C01FABYF2RG"
 COURSE_ML_ZOOMCAMP_CHANNEL = "C0288NJ5XSA"
 COURSE_LLM_ZOOMCAMP_CHANNEL = "C06TEGTGM3J"
+
+
+import sys
+import logging
+from datetime import datetime, UTC
+
+
+class JSONFormatter(logging.Formatter):
+    def format(self, record):
+        log_record = {
+            'timestamp': datetime.now(UTC).isoformat() + 'Z',
+            'level': record.levelname,
+            'message': record.getMessage(),
+            'function': record.funcName,
+            'line': record.lineno,
+        }
+        if record.exc_info:
+            log_record['exception'] = self.formatException(record.exc_info)
+        return json.dumps(log_record)
+
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
+ch = logging.StreamHandler(sys.stdout)
+ch.setLevel(logging.INFO)
+
+formatter = JSONFormatter()
+
+ch.setFormatter(formatter)
+logger.addHandler(ch)
 
 
 def extract_body(event):
@@ -71,7 +93,7 @@ def post_message_thread(event, message):
         'Authorization': f'Bearer {SLACK_TOKEN}'
     }
 
-    print(f'posting {message} to {channel}...')
+    logger.info(f'posting {message} to {channel}...')
     response = requests.post(url, json=message_request, headers=headers)
     response.raise_for_status()
 
@@ -125,7 +147,7 @@ def send_dm(user, message):
         'Authorization': f'Bearer {SLACK_TOKEN}'
     }
     
-    print(f'posting {message} to {user}...')
+    logger.info(f'posting {message} to {user}...')
     response = requests.post(url, json=message_request, headers=headers)
     response.raise_for_status()
     return response.json()
@@ -143,16 +165,15 @@ def remove_message(channel, ts):
         'Authorization': f'Bearer {USER_SLACK_TOKEN}'
     }
 
-    print(f'removing message from {channel} at {ts}...')
+    logger.info(f'removing message from {channel} at {ts}...')
     response = requests.post(url, json=message_request, headers=headers)
     response.raise_for_status()
     return response.json()
 
 
 def default_action(body, event):
-    print('default_action')
+    logger.info('default_action')
     print(json.dumps(body))
-    print()
 
 
 def dont_ask_to_ask(body, event):
@@ -203,7 +224,7 @@ def faq(body, event):
     elif channel == COURSE_LLM_ZOOMCAMP_CHANNEL:
         faq_link = "https://docs.google.com/document/d/1m2KexowAXTmexfC5rVTCSnaShvdUQ8Ag2IEiwBDHxN0/edit"
     else:
-        print('unknown channel, exiting')
+        logger.info('unknown channel, exiting')
         return
 
     message = f"Please check the <{faq_link}|FAQ>"
@@ -311,14 +332,26 @@ def get_message(event):
 
 def ask_ai(body, event):
     user, original_message = get_message(event)
-    
-    chat_completion = groq_client.chat.completions.create(
-        messages=[{"role": "user", "content": original_message}],
-        model="llama3-70b-8192",
-    )
 
-    ai_response = chat_completion.choices[0].message.content
-    print("response from GROQ:", ai_response)
+    url = "https://api.groq.com/openai/v1/chat/completions"
+
+    headers = {
+        'Authorization': f'Bearer {GROQ_API_KEY}'
+    }
+
+    ai_request = {
+        "messages": [{"role": "user", "content": original_message}],
+        "model": "llama3-70b-8192",
+    }
+
+    response = requests.post(url, json=ai_request, headers=headers)
+    response.raise_for_status()
+    
+    chat_completion = response.json()
+
+    ai_response = chat_completion['choices'][0]['message']['content']
+
+    logger.info("response from GROQ: " + ai_response)
 
     message = f"""
 Hi <@{user}>! We asked AI, and this is what it answered:
@@ -355,12 +388,12 @@ def lambda_handler(event, context):
     event = body['event']
     user = event['user']
     event_type = event['type']    
-    print(f'user: {user} (admin: {user in admins}), event_type: {event_type}')
+    logger.info(f'user: {user} (admin: {user in admins}), event_type: {event_type}')
 
     if (event_type == 'reaction_added') and (user in admins):
         reaction = event['reaction']
         action = reaction_actions.get(reaction, default_action)
-        print(f'reaction: {reaction}, action: {action}')
+        logger.info(f'reaction: {reaction}, action: {action}')
         action(body, event)
 
     return {
