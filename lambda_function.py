@@ -188,7 +188,9 @@ def ask_ai(body, event):
     }
 
     ai_request = {
-        "messages": [{"role": "user", "content": original_message}],
+        "messages": [
+            {"role": "user", "content": original_message},
+        ],
         "model": "llama3-70b-8192",
     }
 
@@ -198,6 +200,7 @@ def ask_ai(body, event):
     chat_completion = response.json()
 
     ai_response = chat_completion['choices'][0]['message']['content']
+    ai_response = slack.github_to_slack_markdown(ai_response)
 
     logger.info("response from GROQ: " + ai_response)
 
