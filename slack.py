@@ -61,8 +61,6 @@ def post_message_thread(event, message):
     response.raise_for_status()
 
     response_json = response.json()
-    print(json.dumps(response_json))
-
     return response_json
 
 
@@ -152,8 +150,8 @@ def github_to_slack_markdown(github_markdown: str) -> str:
     slack_markdown = github_markdown
 
     # Convert headers
-    slack_markdown = re.sub(r'(^|\n)###### (.*)', r'\1*_\2_*', slack_markdown)
-    slack_markdown = re.sub(r'(^|\n)##### (.*)', r'\1*_\2_*', slack_markdown)
+    # slack_markdown = re.sub(r'(^|\n)###### (.*)', r'\1*_\2_*', slack_markdown)
+    # slack_markdown = re.sub(r'(^|\n)##### (.*)', r'\1*_\2_*', slack_markdown)
     slack_markdown = re.sub(r'(^|\n)#### (.*)', r'\1*_\2_*', slack_markdown)
     slack_markdown = re.sub(r'(^|\n)### (.*)', r'\1*_\2_*', slack_markdown)
     slack_markdown = re.sub(r'(^|\n)## (.*)', r'\1*_\2_*', slack_markdown)
@@ -168,22 +166,13 @@ def github_to_slack_markdown(github_markdown: str) -> str:
     # slack_markdown = re.sub(r'_(.*?)_', r'_\1_', slack_markdown)
 
     # Convert strikethrough text
-    slack_markdown = re.sub(r'~~(.*?)~~', r'~\1~', slack_markdown)
-
-    # Convert inline code
-    slack_markdown = re.sub(r'`(.*?)`', r'`\1`', slack_markdown)
-
-    # Convert code blocks
-    slack_markdown = re.sub(r'```(.*?)```', r'```\1```', slack_markdown, flags=re.DOTALL)
+    # slack_markdown = re.sub(r'~~(.*?)~~', r'~\1~', slack_markdown)
 
     # Convert links
     slack_markdown = re.sub(r'\[(.*?)\]\((.*?)\)', r'<\2|\1>', slack_markdown)
 
     # Convert lists
-    slack_markdown = re.sub(r'^\s*[-*]\s+', r'• ', slack_markdown, flags=re.MULTILINE)
+    # slack_markdown = re.sub(r'^\s*[-*]\s+', r'• ', slack_markdown, flags=re.MULTILINE)
     # slack_markdown = re.sub(r'^\s*\d+\.\s+', r'1. ', slack_markdown, flags=re.MULTILINE)
-
-    # Convert blockquotes
-    # slack_markdown = re.sub(r'^\s*> (.*)', r'> \1', slack_markdown, flags=re.MULTILINE)
 
     return slack_markdown

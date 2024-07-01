@@ -1,12 +1,10 @@
 import os
 import json
-import base64
 import requests
 
 import slack
 
 from logs import logger
-
 
 
 GROQ_API_KEY = os.getenv('GROQ_API_KEY')
@@ -139,7 +137,7 @@ Apologies for the inconvenience. Thank you!
 """.strip()
 
     item = event['item']
-    slack.send_dm_and_delete(item, message_template)
+    send_dm_and_delete(item, message_template)
 
 
 
@@ -162,7 +160,7 @@ Apologies for the inconvenience. Thank you!
 """.strip()
 
     item = event['item']
-    slack.send_dm_and_delete(item, message_template)
+    send_dm_and_delete(item, message_template)
 
 
 def get_message(event):
@@ -251,10 +249,9 @@ def run(body):
 
 
 def lambda_handler(original_event, context):
-    print(json.dumps(original_event))
-
+    logger.info("test")
+    # print(json.dumps(original_event))
     body = slack.extract_body(original_event)
-
     return run(body)
 
     

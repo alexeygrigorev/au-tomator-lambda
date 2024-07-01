@@ -1,31 +1,20 @@
-import sys
-import json
 
-import logging
-from datetime import datetime, UTC
+class Logger():
 
+    def print(self, message):
+        print(message.replace('\n', ' ').replace('\r', ' '))
 
-class JSONFormatter(logging.Formatter):
-    def format(self, record):
-        log_record = {
-            'timestamp': datetime.now(UTC).isoformat() + 'Z',
-            'level': record.levelname,
-            'message': record.getMessage(),
-            'function': record.funcName,
-            'line': record.lineno,
-        }
-        if record.exc_info:
-            log_record['exception'] = self.formatException(record.exc_info)
-        return json.dumps(log_record)
+    def info(self, message):
+        self.print(message)
+
+    def error(self, message):
+        self.print(message)
+
+    def debug(self, message):
+        self.print(message)
+
+    def exception(self, message):
+        self.print(message)
 
 
-logger = logging.getLogger()
-logger.setLevel(logging.INFO)
-
-ch = logging.StreamHandler(sys.stdout)
-ch.setLevel(logging.INFO)
-
-formatter = JSONFormatter()
-
-ch.setFormatter(formatter)
-logger.addHandler(ch)
+logger = Logger()
