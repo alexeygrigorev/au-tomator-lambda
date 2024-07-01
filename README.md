@@ -1,37 +1,20 @@
+It has two components:
 
-First, deploy the router
+* router - decides if it needs to invoke the second function
+* reactor - the main logic 
 
-For the rest:
+It's split into two parts to work around Slack's 3 second timeout
 
-Preparing the package:
 
-```python
-bash package.sh
-```
-
-Upload it:
-
-```python
-aws lambda \
-    update-function-code \
-    --function-name slack-test \
-    --zip-file fileb://${PWD}/package.zip \
-        > /dev/null
-```
-
-On windows:
+First, deploy the router:
 
 ```bash
-aws lambda \
-    update-function-code \
-    --function-name slack-test \
-    --zip-file fileb://`cygpath -w ${PWD}`/package.zip \
-        > /dev/null
+cd router
+bash publish.sh
 ```
 
-
-Test:
+Next, deploy the reactor:
 
 ```bash
-python test_ai.py
+make deploy
 ```

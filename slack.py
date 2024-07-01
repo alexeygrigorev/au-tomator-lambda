@@ -13,7 +13,7 @@ def post_message_thread(event, message):
     item = event['item']
     channel = item['channel']
     thread_ts = item['ts']
-    
+
     url = 'https://slack.com/api/chat.postMessage'
 
     message_request = {
@@ -47,22 +47,20 @@ def find_message_by_ts(messages, ts):
 def get_message_content(channel, ts):
     params = {
         'channel': channel,
-        'lastest': ts,
-        'limit': 10,
-        'inclusive': True
+        'ts': ts
     }
 
     headers = {
         'Authorization': f'Bearer {SLACK_TOKEN}'
     }
 
-    url = 'https://slack.com/api/conversations.history'
+    url = 'https://slack.com/api/conversations.replies'
     response = requests.get(url, params=params, headers=headers)
     response.raise_for_status()
-    
+
     response_json = response.json()
-    # print(json.dumps(response_json))
-    message = find_message_by_ts(response_json['messages'], ts)
+    all_messages = response_json['messages']
+    message = find_message_by_ts(all_messages, ts)
     return message
 
 

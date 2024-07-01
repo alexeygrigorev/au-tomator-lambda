@@ -200,9 +200,13 @@ def ask_ai(body, event):
         'Authorization': f'Bearer {GROQ_API_KEY}'
     }
 
+    prompt = "You're a helpful assistant. Answer the following " + \
+        "question. Restrict your answer to 2500 characters.\n\n" + \
+        original_message
+
     ai_request = {
         "messages": [
-            {"role": "user", "content": original_message},
+            {"role": "user", "content": prompt},
         ],
         "model": "llama3-70b-8192",
     }
