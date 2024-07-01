@@ -1,4 +1,7 @@
 
+First, deploy the router
+
+For the rest:
 
 Preparing the package:
 

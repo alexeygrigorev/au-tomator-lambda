@@ -1,7 +1,5 @@
 import os
 import re
-import json
-import base64
 import requests
 
 
@@ -9,31 +7,6 @@ from logs import logger
 
 SLACK_TOKEN = os.getenv('SLACK_TOKEN')
 USER_SLACK_TOKEN = os.getenv('USER_SLACK_TOKEN')
-
-
-def extract_body(event):
-    if 'body' not in event:
-        return {}
-    
-    raw = event['body']
-    
-    base64_needed = event.get('isBase64Encoded', False)
-    if base64_needed:
-        raw = base64.b64decode(raw).decode('utf-8')
-
-    decoded = json.loads(raw)
-    return decoded
-
-
-def challenge(body):
-    print(json.dumps(body))
-
-    challenge_answer = body.get("challenge")
-    
-    return {
-        'statusCode': 200,
-        'body': challenge_answer
-    }
 
 
 def post_message_thread(event, message):
