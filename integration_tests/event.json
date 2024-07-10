@@ -11,14 +11,14 @@
         "item": {
             "type": "message",
             "channel": "C01S3EGKMJP",
-            "ts": "1720590492.778339"
+            "ts": "1720616707.940299"
         },
         "item_user": "U01AXE0P5M3",
-        "event_ts": "1720590495.001900"
+        "event_ts": "1720616866.006300"
     },
     "type": "event_callback",
-    "event_id": "Ev07BKCFM4T0",
-    "event_time": 1720590495,
+    "event_id": "Ev07BU2QDHH8",
+    "event_time": 1720616866,
     "authorizations": [
         {
             "enterprise_id": null,

@@ -116,6 +116,18 @@ def get_user_and_message(event):
     return user, message_text
 
 
+def get_message(event):
+    item = event['item']
+    channel = item['channel']
+    ts = item['ts']
+
+    message_details = get_message_content(channel, ts)
+
+    user = message_details['user']
+    message_text = message_details['text']
+
+    return user, message_text
+
 
 def github_to_slack_markdown(github_markdown: str) -> str:
     slack_markdown = github_markdown

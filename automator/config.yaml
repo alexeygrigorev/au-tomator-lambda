@@ -69,7 +69,7 @@ reactions:
 
       You created this message in <#{channel}>:
 
-      > {message_text}
+      > {user_message}
 
       We want to make this community useful for everyone, that's why we ask you to follow the "shameless channels" template and the rules:
 
@@ -86,7 +86,7 @@ reactions:
 
       You created this message in <#{channel}>:
 
-      > {message_text}
+      > {user_message}
 
       We want to make this community useful for everyone, that's why we ask you to follow the templates and the rules suggested here:
 
