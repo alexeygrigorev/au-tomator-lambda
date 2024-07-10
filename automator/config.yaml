@@ -41,6 +41,7 @@ reactions:
         default: https://datatalks.club/slack/guidelines.html#code-problems-and-errors
     message: |
       Please move the error log from the main message to the thread.
+
       Use code block for formatting the log: https://slack.com/help/articles/202288908-Format-your-messages
 
       Follow <{link}|these recommendations> to make it easier to help you.
@@ -55,9 +56,9 @@ reactions:
         course-llm-zoomcamp: https://github.com/DataTalksClub/llm-zoomcamp/blob/main/asking-questions.md
         default: https://datatalks.club/slack/guidelines.html#code-problems-and-errors
     message: |
-      Please don't post screenshots or pictures of your code, 
-      they are very difficult to read. Instead, copy the code and put it 
-      in a code block.
+      Please don't post screenshots or pictures of your code, they are very difficult to read.
+
+      Instead, copy the code and put it in a code block.
 
       Follow <{link}|these recommendations> to make it easier to help you.
 
@@ -70,8 +71,7 @@ reactions:
 
       > {message_text}
 
-      We want to make this community useful for everyone, that's why we ask you to follow
-      the "shameless channels" template and the rules:
+      We want to make this community useful for everyone, that's why we ask you to follow the "shameless channels" template and the rules:
 
       https://alexeygrigorev.notion.site/Shameless-promotion-rules-f565ac6aa2064f7190382f2ffd82c876
 
@@ -88,8 +88,7 @@ reactions:
 
       > {message_text}
 
-      We want to make this community useful for everyone, that's why we ask you to follow
-      the templates and the rules suggested here:
+      We want to make this community useful for everyone, that's why we ask you to follow the templates and the rules suggested here:
 
       https://alexeygrigorev.notion.site/Jobs-b6ab78b9af504c8dac86413e7404fcfb
 
@@ -101,8 +100,7 @@ reactions:
     type: ASK_AI
     model: llama3-70b-8192
     prompt_template: |
-      You're a helpful assistant. Answer the following question. 
-      Restrict your answer to 2500 characters.
+      You're a helpful assistant. Answer the following question. Restrict your answer to 2500 characters.
 
       {user_message}
     answer_template: |
