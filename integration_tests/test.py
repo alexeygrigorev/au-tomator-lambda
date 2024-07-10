@@ -87,7 +87,7 @@ def test_ask_ai():
     trigger_reaction('ask-ai')
 
 def run():
-    # test_dont_ask_to_ask_just_ask()
+    test_dont_ask_to_ask_just_ask()
     # test_thread()
     # test_faq_de_zoomcamp()
     # test_faq_ml_zoomcamp()
@@ -97,7 +97,7 @@ def run():
     # test_error_log_to_thread_please_other_channel()
     # test_no_screenshot_de_zoomcamp()
     # test_no_screenshot_other_channel()
-    test_shameless_rules()
+    # test_shameless_rules()
     # test_jobs_rules()
     # test_ask_ai()
 

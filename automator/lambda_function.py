@@ -18,6 +18,13 @@ with open(CONFIG_FILE, 'r') as f_in:
     config = yaml.safe_load(f_in)
 
 
+reaction_configs = {}
+
+for c in config['reactions']:
+    reaction = c['reaction']
+    reaction_configs[reaction] = c
+
+
 def get_channel_name(channel_id):
     return config['channels'].get(channel_id, None)
     
@@ -96,14 +103,19 @@ action_handlers = {
 def process_reaction(body, event):
     reaction = event['reaction']
 
-    for reaction_config in config['reactions']:
-        if reaction_config['reaction'] == reaction:
-            action_type = reaction_config['type']
-            action_handler = action_handlers.get(action_type)
-            
-            if action_handler:
-                action_handler(event, reaction_config)
-            break
+    if reaction not in reaction_configs:
+        logger.info(f"no reaction config for {reaction}")
+        return
+
+    reaction_config = reaction_configs[reaction]
+
+    action_type = reaction_config['type']
+    action_handler = action_handlers.get(action_type)
+    
+    if action_handler:
+        action_handler(event, reaction_config)
+    else:
+        logger.info(f"no handler for {action_type}")
 
 
 def run(body):
