@@ -88,6 +88,11 @@ def test_ask_in_course_channel():
     # should get a message and see a fake delete
 
 
+def test_to_welcome():
+    trigger_reaction('to-welcome')
+    # should get a message and see a fake delete
+
+
 def test_ask_ai():
     trigger_reaction('ask-ai')
 
@@ -105,8 +110,9 @@ def run():
     # test_no_screenshot_other_channel()
     # test_shameless_rules()
     # test_jobs_rules()
-    test_ask_in_course_channel()
+    # test_ask_in_course_channel()
     # test_ask_ai()
+    test_to_welcome()
 
 
 if __name__ == '__main__':

@@ -4,3 +4,4 @@ package.zip
 __pycache__/
 .envrc
 venv/
+.vscode

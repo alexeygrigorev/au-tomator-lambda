@@ -101,7 +101,7 @@ reactions:
     message: |
       Hi <@{user}>! 
 
-      You created this message in <#{channel}>:
+      You posted this message in <#{channel}>:
 
       > {user_message}
 
@@ -115,6 +115,21 @@ reactions:
       - #course-llm-zoomcamp for LLM Zoomcamp
 
       If your message is about a different course, you can find the full list of channels <https://slack.com/help/articles/205239967-Join-a-channel|here>.
+
+      Apologies for the inconvenience. Thank you!
+
+  - reaction: to-welcome
+    type: DELETE_MESSAGE
+    message: |
+      Hi <@{user}>! 
+
+      You posted this message in <#{channel}>:
+
+      > {user_message}
+
+      We use #welcome for your introduction.
+      
+      Your message was removed from the channel. Please post it again in #welcome.
 
       Apologies for the inconvenience. Thank you!
 
