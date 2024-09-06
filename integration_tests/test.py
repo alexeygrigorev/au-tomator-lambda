@@ -83,11 +83,17 @@ def test_jobs_rules():
     # should get a message and see a fake delete
 
 
+def test_ask_in_course_channel():
+    trigger_reaction('ask-in-course-channel')
+    # should get a message and see a fake delete
+
+
 def test_ask_ai():
     trigger_reaction('ask-ai')
 
+
 def run():
-    test_dont_ask_to_ask_just_ask()
+    # test_dont_ask_to_ask_just_ask()
     # test_thread()
     # test_faq_de_zoomcamp()
     # test_faq_ml_zoomcamp()
@@ -99,9 +105,8 @@ def run():
     # test_no_screenshot_other_channel()
     # test_shameless_rules()
     # test_jobs_rules()
+    test_ask_in_course_channel()
     # test_ask_ai()
-
-
 
 
 if __name__ == '__main__':

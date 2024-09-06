@@ -96,9 +96,32 @@ reactions:
 
       Apologies for the inconvenience. Thank you!
 
+  - reaction: ask-in-course-channel
+    type: DELETE_MESSAGE
+    message: |
+      Hi <@{user}>! 
+
+      You created this message in <#{channel}>:
+
+      > {user_message}
+
+      Your post was removed from the channel. 
+
+      Please use course-specific channels for course-related questions:
+
+      - #course-ml-zoomcamp for ML Zoomcamp
+      - #course-data-engineering for Data Engineering Zoomcamp
+      - #course-mlops-zoomcamp for MLOps Zoomcamp
+      - #course-llm-zoomcamp for LLM Zoomcamp
+
+      If your message is about a different course, you can find the full list of channels <https://slack.com/help/articles/205239967-Join-a-channel|here>.
+
+      Apologies for the inconvenience. Thank you!
+
+
   - reaction: ask-ai
     type: ASK_AI
-    model: llama3-70b-8192
+    model: llama-3.1-70b-versatile
     prompt_template: |
       You're a helpful assistant. Answer the following question. Restrict your answer to 2500 characters.
 
