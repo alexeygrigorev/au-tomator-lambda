@@ -23,10 +23,10 @@ reactions:
     type: SLACK_POST
     placeholders:
       link:
-        course-ml-zoomcamp: https://docs.google.com/document/d/1LpPanc33QJJ6BSsyxVg-pWNMplal84TdZtq10naIhD8/edit
-        course-data-engineering: https://docs.google.com/document/d/19bnYs80DwuUimHM65UV3sylsCn2j1vziPOwzBwQrebw/edit
-        course-mlops-zoomcamp: https://docs.google.com/document/d/12TlBfhIiKtyBv8RnsoJR6F72bkPDGEvPOItJIxaEzE0/edit
-        course-llm-zoomcamp: https://docs.google.com/document/d/1m2KexowAXTmexfC5rVTCSnaShvdUQ8Ag2IEiwBDHxN0/edit
+        course-ml-zoomcamp: https://datatalks.club/faq/machine-learning-zoomcamp.html
+        course-data-engineering: https://datatalks.club/faq/data-engineering-zoomcamp.html
+        course-mlops-zoomcamp: https://datatalks.club/faq/mlops-zoomcamp.html
+        course-llm-zoomcamp: https://datatalks.club/faq/llm-zoomcamp.html
     message: >
       Please check the <{link}|FAQ>
 
