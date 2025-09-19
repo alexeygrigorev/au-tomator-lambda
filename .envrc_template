@@ -1,3 +1,6 @@
 export GROQ_API_KEY='your-api-key'
 export SLACK_TOKEN='your-slack-token'
 export USER_SLACK_TOKEN='your-user-slack-token'
+
+export AWS_ACCESS_KEY_ID='your-access-key-id'
+export AWS_SECRET_ACCESS_KEY='your-secret-access-key'

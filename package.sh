@@ -3,7 +3,7 @@ rm package.zip
 
 mkdir package
 
-pip install -r requirements.txt -t package/
+uv pip install -r requirements.txt --target package/
 
 cp automator/* package
 
