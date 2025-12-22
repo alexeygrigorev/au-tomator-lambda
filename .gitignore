@@ -5,3 +5,6 @@ __pycache__/
 .envrc
 venv/
 .vscode
+localstack-data/
+*.pyc
+.pytest_cache/

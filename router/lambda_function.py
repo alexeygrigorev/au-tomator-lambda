@@ -40,7 +40,7 @@ def run(body):
         return challenge(body)
 
     event = body['event']
-    event_user = event['user']
+    event_user = event.get('user')
     event_type = event['type']
 
     print(f'user: {event_user} (admin: {event_user in admins}), event_type: {event_type}')
@@ -48,6 +48,14 @@ def run(body):
     if (event_type == 'reaction_added') and (event_user in admins):
         lambda_client.invoke(
             FunctionName='automator-process-reaction',
+            InvocationType='Event',
+            Payload=json.dumps(body)
+        )
+    
+    # Route message events to moderator lambda
+    if event_type == 'message':
+        lambda_client.invoke(
+            FunctionName='automator-message-moderator',
             InvocationType='Event',
             Payload=json.dumps(body)
         )
