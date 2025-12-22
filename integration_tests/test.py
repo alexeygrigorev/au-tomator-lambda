@@ -93,6 +93,11 @@ def test_to_welcome():
     # should get a message and see a fake delete
 
 
+def test_delete():
+    trigger_reaction('delete')
+    # should get a message to parent and thread authors and see fake deletes
+
+
 def test_ask_ai():
     trigger_reaction('ask-ai')
 
@@ -112,7 +117,8 @@ def run():
     # test_jobs_rules()
     # test_ask_in_course_channel()
     # test_ask_ai()
-    test_to_welcome()
+    # test_to_welcome()
+    test_delete()
 
 
 if __name__ == '__main__':
