@@ -185,8 +185,13 @@ def delete_messages(messages):
 
 def deactivate_user(user_id):
     """
-    Deactivate a user (using admin.users.setInactive API).
-    Note: This requires admin privileges and the admin scope.
+    Deactivate a user (using admin.users.session.invalidate API).
+    Note: This requires admin privileges and the admin.users.session:write scope.
+    
+    Alternative: Use admin.users.setInactive if you need to fully deactivate the account,
+    which requires the admin.users:write scope and Slack Enterprise Grid.
+    
+    For most use cases, invalidating the session is sufficient and more widely available.
     
     Args:
         user_id: The user ID to deactivate
@@ -194,7 +199,8 @@ def deactivate_user(user_id):
     Returns:
         dict: API response
     """
-    url = 'https://slack.com/api/admin.users.setInactive'
+    # Use session invalidation as it's more widely available
+    url = 'https://slack.com/api/admin.users.session.invalidate'
     
     headers = {
         'Authorization': f'Bearer {USER_SLACK_TOKEN}',
@@ -202,7 +208,8 @@ def deactivate_user(user_id):
     }
     
     payload = {
-        'user_id': user_id
+        'user_id': user_id,
+        'team_id': os.getenv('SLACK_TEAM_ID')  # Required for session invalidation
     }
     
     response = requests.post(url, json=payload, headers=headers)

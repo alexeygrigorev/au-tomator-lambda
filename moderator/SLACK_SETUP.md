@@ -15,7 +15,8 @@ Your Slack app needs the following scopes:
 
 **User Token Scopes** (USER_SLACK_TOKEN):
 - `chat:write` - Delete messages
-- `admin.users:write` - Deactivate users (requires workspace admin)
+- `admin.users.session:write` - Invalidate user sessions (recommended for deactivation)
+- OR `admin.users:write` - Set user inactive (requires Slack Enterprise Grid)
 
 ### Event Subscriptions
 
@@ -61,6 +62,7 @@ Set these in your Lambda function configuration:
 - `SLACK_TOKEN` - Your bot token (starts with `xoxb-`)
 - `USER_SLACK_TOKEN` - Your user token with admin privileges (starts with `xoxp-`)
 - `ADMIN_USER_ID` - Slack user ID of the admin (e.g., `U01AXE0P5M3`)
+- `SLACK_TEAM_ID` - Your Slack team/workspace ID (required for session invalidation, e.g., `T01234567`)
 - `MESSAGE_TRACKER_TABLE` - DynamoDB table name (default: `slack-message-tracker`)
 - `MESSAGE_THRESHOLD` - Number of messages to trigger alert (default: `5`)
 - `TIME_WINDOW_SECONDS` - Time window in seconds (default: `180` = 3 minutes)
@@ -91,6 +93,9 @@ Set these in your Lambda function configuration:
 - Check that the message timestamps are valid
 
 ### Cannot deactivate users
-- Requires `admin.users:write` scope
+- Requires `admin.users.session:write` scope (for session invalidation)
+- OR requires `admin.users:write` scope (for full deactivation on Enterprise Grid)
 - The user token must be from a workspace admin
+- For session invalidation, ensure `SLACK_TEAM_ID` environment variable is set
 - Check Slack API response for specific error messages
+- Note: Session invalidation is more widely available than full user deactivation

@@ -94,6 +94,8 @@ def track_message(user_id, channel_id, message_ts, message_text):
     )
     
     # Check if threshold exceeded
+    # Using >= so that exactly MESSAGE_THRESHOLD messages triggers the alert
+    # e.g., if threshold is 5, then 5 or more messages will trigger
     exceeded = len(messages) >= MESSAGE_THRESHOLD
     
     return {

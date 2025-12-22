@@ -23,6 +23,7 @@ The moderator consists of three main components:
 - `SLACK_TOKEN`: Slack bot token for posting messages
 - `USER_SLACK_TOKEN`: Slack user token with admin privileges for deleting messages and deactivating users
 - `ADMIN_USER_ID`: Slack user ID of the admin who receives alerts (default: U01AXE0P5M3)
+- `SLACK_TEAM_ID`: Slack team/workspace ID (required for user session invalidation)
 - `MESSAGE_TRACKER_TABLE`: DynamoDB table name (default: slack-message-tracker)
 - `MESSAGE_THRESHOLD`: Number of messages to trigger alert (default: 5)
 - `TIME_WINDOW_SECONDS`: Time window in seconds (default: 180 = 3 minutes)
@@ -84,7 +85,8 @@ The bot requires the following OAuth scopes:
 
 - `chat:write` - Post messages
 - `users:read` - Read user information
-- `admin.users:write` - Deactivate users (requires admin token)
+- `admin.users.session:write` - Invalidate user sessions (recommended)
+- OR `admin.users:write` - Deactivate users fully (Enterprise Grid only)
 - `chat:write.admin` - Delete messages (requires user token)
 
 ### Event Subscriptions
