@@ -80,7 +80,7 @@ def get_thread_replies(channel, ts):
     response.raise_for_status()
 
     response_json = response.json()
-    all_messages = response_json['messages']
+    all_messages = response_json.get('messages', [])
     
     # Filter out the parent message (first message with ts == thread_ts)
     thread_replies = [msg for msg in all_messages if msg['ts'] != ts]

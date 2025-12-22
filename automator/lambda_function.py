@@ -101,38 +101,48 @@ def handle_delete_with_threads(event, reaction_config):
     
     # Get parent message details
     parent_message = slack.get_message_content(channel, ts)
-    parent_user = parent_message['user']
-    parent_text = parent_message['text']
+    if not parent_message:
+        logger.info(f"Parent message not found for {channel} {ts}")
+        return
+    
+    parent_user = parent_message.get('user')
+    parent_text = parent_message.get('text', '')
+    
+    # Skip if there's no user (e.g., bot message or deleted message)
+    if not parent_user:
+        logger.info(f"Parent message has no user for {channel} {ts}")
+        return
     
     # Get thread replies
     thread_replies = slack.get_thread_replies(channel, ts)
     
     # Delete all thread replies first
-    thread_message_pattern = reaction_config.get('thread_message', '')
-    for reply in thread_replies:
-        reply_user = reply.get('user')
-        reply_ts = reply['ts']
-        
-        if reply_user:  # Only process messages with a user (not bot messages)
-            # Send DM to thread reply author
-            thread_values = {
-                'user': reply_user,
-                'channel': channel,
-            }
+    thread_message_pattern = reaction_config.get('thread_message')
+    if thread_message_pattern:
+        for reply in thread_replies:
+            reply_user = reply.get('user')
+            reply_ts = reply['ts']
             
-            if 'placeholders' in reaction_config:
-                thread_values.update(reaction_config['placeholders'])
-            
-            thread_dm = util.format_message(thread_message_pattern, thread_values, channel)
-            
-            if thread_dm:
-                slack.send_dm(reply_user, thread_dm)
-            
-            # Delete the thread reply
-            if FAKE_DELETE:
-                logger.info(f"FAKE_DELETE thread reply for {channel} {reply_ts}")
-            else:
-                slack.remove_message(channel, reply_ts)
+            if reply_user:  # Only process messages with a user (not bot messages)
+                # Send DM to thread reply author
+                thread_values = {
+                    'user': reply_user,
+                    'channel': channel,
+                }
+                
+                if 'placeholders' in reaction_config:
+                    thread_values.update(reaction_config['placeholders'])
+                
+                thread_dm = util.format_message(thread_message_pattern, thread_values, channel)
+                
+                if thread_dm:
+                    slack.send_dm(reply_user, thread_dm)
+                
+                # Delete the thread reply
+                if FAKE_DELETE:
+                    logger.info(f"FAKE_DELETE thread reply for {channel} {reply_ts}")
+                else:
+                    slack.remove_message(channel, reply_ts)
     
     # Now handle the parent message
     parent_message_pattern = reaction_config['message']
