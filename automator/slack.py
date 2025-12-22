@@ -64,6 +64,30 @@ def get_message_content(channel, ts):
     return message
 
 
+def get_thread_replies(channel, ts):
+    """Get all replies in a thread (excluding the parent message)"""
+    params = {
+        'channel': channel,
+        'ts': ts
+    }
+
+    headers = {
+        'Authorization': f'Bearer {SLACK_TOKEN}'
+    }
+
+    url = 'https://slack.com/api/conversations.replies'
+    response = requests.get(url, params=params, headers=headers)
+    response.raise_for_status()
+
+    response_json = response.json()
+    all_messages = response_json.get('messages', [])
+    
+    # Filter out the parent message (first message with ts == thread_ts)
+    thread_replies = [msg for msg in all_messages if msg['ts'] != ts]
+    
+    return thread_replies
+
+
 def send_dm(user, message):    
     url = 'https://slack.com/api/chat.postMessage'
 

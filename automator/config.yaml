@@ -133,6 +133,28 @@ reactions:
 
       Apologies for the inconvenience. Thank you!
 
+  - reaction: delete
+    type: DELETE_WITH_THREADS
+    message: |
+      Hi <@{user}>! 
+
+      You posted this message in <#{channel}>:
+
+      > {user_message}
+
+      Your message was removed from the channel because it was either double posting or violating some of the community guidelines:
+
+      https://datatalks.club/slack/guidelines.html
+
+      Apologies for the inconvenience. Thank you!
+    thread_message: |
+      Hi <@{user}>! 
+
+      Your message in <#{channel}> was removed because the parent message was deleted for violating community guidelines:
+
+      https://datatalks.club/slack/guidelines.html
+
+      Apologies for the inconvenience. Thank you!
 
   - reaction: ask-ai
     type: ASK_AI
