@@ -30,6 +30,10 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: eu-west-1
 
+    - name: Install UV
+      run: |
+        pip install uv
+        
     - name: Package Lambda function
       run: |
         bash package.sh
