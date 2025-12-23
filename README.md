@@ -1,10 +1,12 @@
-It has two components:
+It has three components:
 
-* router - decides if it needs to invoke the second function
-* automator - the main logic 
+* router - decides if it needs to invoke other functions based on event type
+* automator - the main logic for handling reactions
+* moderator - monitors message rates and alerts admin when thresholds are exceeded
 
-It's split into two parts to work around Slack's 3 second timeout
+The router and automator are split into two parts to work around Slack's 3 second timeout.
 
+## Deployment
 
 First, deploy the router:
 
@@ -18,6 +20,26 @@ Next, deploy the automator:
 ```bash
 make deploy
 ```
+
+Finally, deploy the moderator:
+
+```bash
+cd moderator
+bash package.sh
+bash deploy.sh
+```
+
+## Message Moderator
+
+The moderator lambda monitors message rates and alerts administrators when users exceed configured thresholds. See [moderator/README.md](moderator/README.md) for detailed documentation.
+
+**Key Features:**
+- Tracks messages per user using DynamoDB
+- Configurable threshold (default: 5 messages in 3 minutes)
+- Interactive admin alerts with action buttons
+- Bulk message deletion
+- User deactivation capability
+- LocalStack support for testing
 
 ## Application Configuration
 
