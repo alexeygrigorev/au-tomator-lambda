@@ -17,14 +17,6 @@ updates:
       automator-deps:
         patterns: ["*"]
 
-  - package-ecosystem: "uv"
-    directory: "/moderator"
-    schedule:
-      interval: "weekly"
-    groups:
-      moderator-deps:
-        patterns: ["*"]
-
   # GitHub Actions used by the test/deploy workflows.
   - package-ecosystem: "github-actions"
     directory: "/"

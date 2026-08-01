@@ -15,7 +15,7 @@ spec = importlib.util.spec_from_file_location("automator_lambda_function", autom
 lambda_function = importlib.util.module_from_spec(spec)
 
 # Register in sys.modules so patching works
-# This is needed because we load the module dynamically to avoid conflicts with moderator tests
+# This is needed because we load the module dynamically to avoid name conflicts with other projects' tests
 sys.modules['automator_lambda_function'] = lambda_function
 
 # Add automator to sys.path temporarily for imports within lambda_function

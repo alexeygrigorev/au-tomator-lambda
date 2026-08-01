@@ -48,13 +48,9 @@ def run(body):
     if 'challenge' in body:
         return challenge(body)
     
-    # Handle interactive components (button clicks)
+    # Handle interactive components (button clicks): nothing consumes them
+    # right now, so just acknowledge so Slack does not retry.
     if 'payload' in body:
-        lambda_client.invoke(
-            FunctionName='automator-message-moderator',
-            InvocationType='Event',
-            Payload=json.dumps(body)
-        )
         return {
             'statusCode': 200,
             'body': json.dumps({'ok': True})

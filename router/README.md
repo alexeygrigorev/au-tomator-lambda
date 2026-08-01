@@ -6,11 +6,10 @@
 The router is the single entry point for Slack. Every event from Slack —
 messages, emoji reactions, button clicks — hits this Lambda first. Slack expects
 a response within ~3 seconds, so the router replies immediately and invokes the
-right downstream Lambda **asynchronously** (the automator, or the moderator when
-that route is enabled).
+automator **asynchronously**.
 
-See the top-level [README](../README.md) for how the router, automator, and
-moderator fit together.
+See the top-level [README](../README.md) for how the router and automator fit
+together.
 
 ## Layout
 
