@@ -119,6 +119,12 @@ reactions:
 
       Follow <{link}|these recommendations> to make it easier to help you.
 
+  - reaction: no-ai
+    type: SLACK_POST
+    message: >
+      Please don't use AI to answer this question. See our AI usage guidelines:
+      https://datatalks.club/docs/general/guidelines/ai-usage/
+
   - reaction: shameless-rules
     type: DELETE_MESSAGE
     message: |

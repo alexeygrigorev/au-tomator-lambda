@@ -47,6 +47,9 @@ ASKING_QUESTIONS_URL = (
 ASKING_FOR_HELP_URL = (
     'https://datatalks.club/docs/general/guidelines/asking-for-help/'
 )
+AI_USAGE_GUIDELINES_URL = (
+    'https://datatalks.club/docs/general/guidelines/ai-usage/'
+)
 
 
 def reaction_event(reaction, channel=CH_DE, ts='1700000000.000100', user='UMOD'):
@@ -94,6 +97,18 @@ class TestPlaceholderSlackPost(unittest.TestCase):
                 mock_slack.post_message_thread.assert_called_once()
                 posted = mock_slack.post_message_thread.call_args[0][1]
                 self.assertIn(expected_url, posted)
+
+
+class TestNoAiRouting(unittest.TestCase):
+    """no-ai posts the AI usage guidelines in the thread."""
+
+    @patch('automator_lambda_function.slack')
+    def test_no_ai_posts_guidelines(self, mock_slack):
+        deliver(reaction_event('no-ai'))
+
+        mock_slack.post_message_thread.assert_called_once()
+        posted = mock_slack.post_message_thread.call_args[0][1]
+        self.assertIn(AI_USAGE_GUIDELINES_URL, posted)
 
 
 class TestBeSpecificRouting(unittest.TestCase):

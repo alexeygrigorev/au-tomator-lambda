@@ -176,6 +176,7 @@ If a placeholder is channel-specific and the channel isn’t in the map, the `de
 | `faq` | FAQ_ASSISTANT | Answer the reacted message with the Cloudflare FAQ assistant. |
 | `error-log-to-thread-please` | REPOST_TO_THREAD_AND_DELETE | Move error log to thread, delete from channel. |
 | `no-screenshot` | SLACK_POST | Advise against code screenshots; link to guidelines. |
+| `no-ai` | SLACK_POST | Point to the AI usage guidelines. |
 | `shameless-rules` | DELETE_MESSAGE | Enforce shameless-promo rules; DM author. |
 | `jobs-rules` | DELETE_MESSAGE | Enforce job-posting rules; DM author. |
 | `ask-ai` | ASK_AI | Generate and post an AI reply in the thread. |
